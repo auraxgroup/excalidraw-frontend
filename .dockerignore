@@ -1,0 +1,68 @@
+# Version control and CI
+.git
+.github
+.gitignore
+.gitattributes
+.husky
+
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs
+build
+dist
+**/build
+**/dist
+dev-dist
+
+# Development files
+.vscode
+.idea
+*.log
+.DS_Store
+*.md
+!README.md
+.eslintignore
+.eslintrc.json
+.prettierrc
+.prettierignore
+.editorconfig
+.env.development*
+.env.local
+.env.test*
+coverage
+
+# Test and example files
+__tests__
+**/__tests__
+tests
+**/tests
+*.test.js
+*.spec.js
+examples/
+dev-docs/
+
+# Environment (except production)
+.env
+.env.*
+!.env.production
+
+# Development configs
+tsconfig.json
+tsconfig.*.json
+jest.config.js
+vite.config.*.ts
+*.config.js
+!nginx.config.js
+
+# Scripts not needed in production
+scripts/
+.changeset/
+
+# Other
+.docker
+docker-compose*.yml
+firebase/
+logs/
+meta*.json
