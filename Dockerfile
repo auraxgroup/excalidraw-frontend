@@ -3,25 +3,40 @@ FROM node:18 AS build
 
 WORKDIR /opt/node_app
 
-# Copy package files first for better caching
+# Copy root workspace files
 COPY package.json yarn.lock ./
+
+# Create necessary directories
+RUN mkdir -p excalidraw-app/scripts/woff2 \
+    packages/excalidraw \
+    packages/utils \
+    packages/math
+
+# Copy package.json files for all workspaces
 COPY excalidraw-app/package.json ./excalidraw-app/
 COPY packages/excalidraw/package.json ./packages/excalidraw/
 COPY packages/utils/package.json ./packages/utils/
 COPY packages/math/package.json ./packages/math/
 
+# Copy scripts directory first (contains required build scripts)
+COPY scripts ./scripts/
+COPY excalidraw-app/scripts ./excalidraw-app/scripts/
+
 # Install dependencies with frozen lockfile
 RUN yarn install --frozen-lockfile --network-timeout 600000
 
-# Copy source files
+# Copy remaining source files
 COPY . .
 
-# Copy env file
+# Copy env file to correct location
 COPY .env.production ./excalidraw-app/.env.production
 
 # Set production environment
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
+
+# Disable husky during build
+ENV HUSKY=0
 
 # Build the application
 RUN yarn build:app:docker
